@@ -1,8 +1,10 @@
-var cityInput = document.querySelector("#citySearch")
+var cityInput = $("#citySearch")
 var searchButton = $("#searchButton")
 var resultText = $("#result-text")
 var resultContent = $("#result-content")
-var searchForm = document.querySelector("#search-form")
+var searchForm = $("#search-form")
+var forecastResult = $("#forecast-result")
+var forecastContent = $ ("#forecast-content")
 
 var apiKey = "7e98b40a5460fd4e49d4ad6cfd6bacde"
 
@@ -12,7 +14,7 @@ var apiKey = "7e98b40a5460fd4e49d4ad6cfd6bacde"
 
 var citySearched = function (event){
     event.preventDefault();
-    var cityName = cityInput.value.trim();
+    var cityName = cityInput.val().trim();
     console.log(cityName);
 
     if (cityName) {
@@ -29,11 +31,26 @@ fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&appid=${apiKey
 
 }).then(function(data) {
     console.log (data)
-    fetchWeather(data)
+    fetchWeatherCurrent(data)
+    fetchWeatherForecast(data)
 })
 }
 
-function fetchWeather(data) {
+function fetchWeatherCurrent(data) {
+    var lat = data[0].lat;
+    console.log(lat)
+    var lon = data[0].lon;
+    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`).then(function(response) {
+    return response.json()
+
+}).then(function(data) {
+    console.log (data)
+    displayWeatherCurrent(data)
+})
+}
+
+
+function fetchWeatherForecast(data) {
     var lat = data[0].lat;
     console.log(lat)
     var lon = data[0].lon;
@@ -42,13 +59,33 @@ function fetchWeather(data) {
 
 }).then(function(data) {
     console.log (data)
-    displayWeather(data)
+    displayWeatherForecast(data)
 })
 }
 
-function displayWeather(data) {
+function displayWeatherCurrent(data) {
     console.log(data)
+    resultText.text(data.name)
+    var wCurrent = $("<p>")
+    resultContent.append(wCurrent)
+    wCurrent.text(`Temperature: ${data.main.temp} Degrees`)
     
+}
+
+
+function displayWeatherForecast(data) {
+    console.log(data)
+
+for (let i=0; i<data.list.length; i+=8){
+    var wForcast = $("<p>")
+    var wFeel = $("<p>")
+    forecastContent.append(wForcast)
+    forecastContent.append(wFeel)
+    wForcast.text(`Temperature: ${data.list[i].main.temp} Degrees`)
+    wFeel.text(`Feels like: ${data.list[i].main.feels_like} Degrees`)
+
+}
+
 }
 
 // fetch(weatherURL).then(function(response) {
@@ -58,4 +95,4 @@ function displayWeather(data) {
 //     console.log (data)
 // })
 
-searchForm.addEventListener("submit", citySearched)
+searchForm.on("submit", citySearched)
