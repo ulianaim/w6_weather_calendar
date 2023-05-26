@@ -1,0 +1,28 @@
+body {
+    font-family: 'Fira Sans', sans-serif;
+    background-color: rgb(186, 211, 211);
+  }
+
+.container {
+    width: 85%;
+	align-items: center;
+	margin: 0 auto;	
+}
+  
+  h1 {
+    display: flexbox;
+    padding-left: 40%;
+    background-color: aliceblue;
+  }
+
+h2 {
+   display: flexbox;
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    /* border: 50px;
+    border-color: rgb(10, 10, 10); */
+  }
+  
+  
+
+  
