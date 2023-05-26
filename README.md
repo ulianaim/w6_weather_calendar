@@ -21,3 +21,5 @@ THEN I am presented with a 5-day forecast that displays the date, an icon repres
 WHEN I click on a city in the search history
 THEN I am again presented with current and future conditions for that city
 ```
+The following picture shows the web application's appearance:
+![alt text](./assets/Greenshot%202023-05-25%2021.30.41.png)
