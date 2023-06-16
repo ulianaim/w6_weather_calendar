@@ -25,7 +25,7 @@ var citySearched = function (event){
 
 // Doing first fetch to fetch the city that customer looking for 
 function fetchCity (cityName) {
-fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&appid=${apiKey}`).then(function(response) {
+fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&appid=${apiKey}`).then(function(response) {
     return response.json()
 
 }).then(function(data) {
@@ -65,6 +65,7 @@ function fetchWeatherForecast(data) {
 
 // Creating function to display current weather
 function displayWeatherCurrent(data) {
+    resultContent.text ("")
     console.log(data)
     resultText.text(data.name)
     var wCurrent = $("<p>")
@@ -75,13 +76,24 @@ function displayWeatherCurrent(data) {
 
 // Creating function to display weather forecast, also creating loop function 
 function displayWeatherForecast(data) {
+    forecastContent.text ("")
     console.log(data)
 
 for (let i=0; i<data.list.length; i+=8){
+    var wCard = $("<div>")
+    var wCardBody = $("<div>")
+    var wCardTitle = $("<h5>")
     var wForcast = $("<p>")
     var wFeel = $("<p>")
-    forecastContent.append(wForcast)
-    forecastContent.append(wFeel)
+    forecastContent.append(wCard)
+    wCard.attr("class", "card col-2")
+    wCard.append(wCardBody)
+    wCardBody.attr("class", "card-body")
+    wCardBody.append(wCardTitle)
+    wCardTitle.attr("class", "card-title")
+    wCardBody.append(wForcast)
+    wCardBody.append(wFeel)
+    
     wForcast.text(`Temperature: ${data.list[i].main.temp} Degrees`)
     wFeel.text(`Feels like: ${data.list[i].main.feels_like} Degrees`)
 }
