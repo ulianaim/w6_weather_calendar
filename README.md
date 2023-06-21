@@ -22,4 +22,6 @@ WHEN I click on a city in the search history
 THEN I am again presented with current and future conditions for that city
 ```
 The following picture shows the web application's appearance:
-![alt text](./assets/Greenshot%202023-05-25%2021.30.41.png)
+![alt text](./assets/Greenshot%202023-06-21%2018.34.32.png)
+
+The following webpage can take you to the website so you can check weather in your desired city:https://ulianaim.github.io/w6_weather_calendar/
