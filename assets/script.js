@@ -6,6 +6,8 @@ var resultContent = $("#result-content")
 var searchForm = $("#search-form")
 var forecastResult = $("#forecast-result")
 var forecastContent = $ ("#forecast-content")
+var allCities = []
+var historySearch = $("#search-list")
 
 // Add var for API key
 var apiKey = "7e98b40a5460fd4e49d4ad6cfd6bacde"
@@ -15,11 +17,29 @@ var citySearched = function (event){
     event.preventDefault();
     var cityName = cityInput.val().trim();
     console.log(cityName);
+    allCities.push (cityName)
+    localStorage.setItem("Search_history", JSON.stringify(allCities))
+    renderCities(allCities)
 
     if (cityName) {
         fetchCity(cityName)
     } else {
         alert("Please eneter city name")
+    }
+}
+
+
+
+function renderCities (allCities) {
+    historySearch.text("")
+    if (allCities.length) {
+        allCities.forEach(element => {
+           var listOfCities = $("<button>")
+           historySearch.append (listOfCities)
+           listOfCities.attr("btn btn-primary")
+           listOfCities.text (element)
+           listOfCities.on("click", fetchCity(element))
+        });
     }
 }
 
@@ -65,12 +85,25 @@ function fetchWeatherForecast(data) {
 
 // Creating function to display current weather
 function displayWeatherCurrent(data) {
+    var currentDate = dayjs.unix(data.dt).format ("MM/DD/YYYY")
+    console.log(currentDate)
+    
     resultContent.text ("")
     console.log(data)
     resultText.text(data.name)
+    var date = $("<p>")
+    resultContent.append(date)
+    date.text(`Today's Date: ${currentDate} `)
     var wCurrent = $("<p>")
     resultContent.append(wCurrent)
     wCurrent.text(`Temperature: ${data.main.temp} Degrees`)
+    var humidity = $("<p>")
+    resultContent.append(humidity)
+    humidity.text(`Humidity: ${data.main.humidity} %`)
+    var wind = $("<p>")
+    resultContent.append(wind)
+    wind.text(`Wind Speed: ${data.wind.speed} mph/h`)
+
 
 }
 
